@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller {
+public class homeController {
 
     @FXML
     private Button startButton;
@@ -23,7 +23,7 @@ public class Controller {
     @FXML
     private void onStartButtonClick() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("gamepage.fxml"));
-        Scene scene = new Scene(root,450,300);
+        Scene scene = new Scene(root,600,450);
         Stage stage = (Stage)startButton.getScene().getWindow();
         stage.setScene(scene);
     }

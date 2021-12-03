@@ -6,8 +6,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" styleClass="bodybg" stylesheets="@../backgroundImage.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" styleClass="bodybg" stylesheets="@../backgroundImage.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.homeController">
    <children>
       <Text fill="#cccccc" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to:">
          <font>
@@ -19,12 +18,12 @@
             <Font size="42.0" />
          </font>
       </Text>
-      <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="168.0" text="Exit" />
-      <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="168.0" text="High Score" />
-      <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButtonClick" prefHeight="20.0" prefWidth="168.0" text="Start">
+      <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButtonClick" prefHeight="20.0" prefWidth="168.0" snapToPixel="false" text="Start">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
+      <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="168.0" text="Exit" />
+      <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="168.0" text="High Score" />
    </children>
 </VBox>
