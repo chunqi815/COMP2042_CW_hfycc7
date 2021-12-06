@@ -12,12 +12,15 @@ import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -39,14 +42,16 @@ public class gameController implements Initializable {
     double deltaX = -1;
     double deltaY = -3;
 
+    private static final int DEF_MOVE_AMOUNT = 5;
+
 
     private ArrayList<Rectangle> bricks = new ArrayList<>();
 
-    //1 Frame evey 10 millis, which means 100 FPS
+    //1 Frame every 10 millis, which means 100 FPS
     Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+
         @Override
         public void handle(ActionEvent actionEvent) {
-
             checkCollisionPaddle(paddle);
             ball.setLayoutX(ball.getLayoutX() + deltaX);
             ball.setLayoutY(ball.getLayoutY() + deltaY);
@@ -84,13 +89,13 @@ public class gameController implements Initializable {
 //      paddle move left
         if (event.getCode() == KeyCode.A) {
             if (paddle.getLayoutX() > 0) {
-                paddle.setLayoutX(paddle.getLayoutX() - 5);
+                paddle.setLayoutX(paddle.getLayoutX() - DEF_MOVE_AMOUNT);
             }
         }
 //      paddle move right
         if (event.getCode() == KeyCode.D) {
             if (paddle.getLayoutX() < 450) {
-                paddle.setLayoutX(paddle.getLayoutX() + 5);
+                paddle.setLayoutX(paddle.getLayoutX() + DEF_MOVE_AMOUNT);
             }
         }
     }
@@ -163,22 +168,18 @@ public class gameController implements Initializable {
 
         }
     }
-    public void createBricks(){
-        double width = 560;
-        double height = 200;
+    public void createBricks() {
 
-        int spaceCheck = 1;
-
-        for (double i = height; i > 0 ; i = i - 50) {
-            for (double j = width; j > 0 ; j = j - 25) {
-                if(spaceCheck % 2 == 0){
-                    Rectangle rectangle = new Rectangle(j,i,30,30);
-                    rectangle.setFill(Color.FIREBRICK);
-                    scene.getChildren().add(rectangle);
-                    bricks.add(rectangle);
+        int k = 0;
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 10; j++) {
+                    Rectangle brickModel = new Rectangle((j * 64), k, 63, 29);
+                    brickModel.setFill(Color.FIREBRICK);
+                    scene.getChildren().add(brickModel);
+                    bricks.add(brickModel);
                 }
-                spaceCheck++;
+                k += 30;
             }
         }
     }
-}
+
