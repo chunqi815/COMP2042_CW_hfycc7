@@ -42,7 +42,8 @@ public class gameController implements Initializable {
 
     private static final int DEF_MOVE_AMOUNT = 5;
 
-    public int gameStrike =0;
+    public int gameStrike = 0;
+    public int gameLevel = 0;
 
     private ArrayList<Rectangle> bricks = new ArrayList<>();
 
@@ -72,16 +73,23 @@ public class gameController implements Initializable {
     }
 
     @FXML
-    public void startKey(KeyEvent event){
-        if (event.getCode() == KeyCode.SPACE){
-            startGame();
-        }
+    public void playPauseKey(KeyEvent event){
 
+        if(event.getCode() == KeyCode.SPACE) {
+            if (timeline != null && timeline.getStatus() == Animation.Status.RUNNING) {
+                timeline.pause();
+            } else if (timeline != null && timeline.getStatus() == Animation.Status.PAUSED) {
+                timeline.play();
+            } else {
+                startGame();
+            }
+        }
     }
 
     private void startGame(){
-        createBricks();
         timeline.play();
+        if(gameStrike == 0){
+        createBricks();}
     }
 
     @FXML
@@ -113,6 +121,7 @@ public class gameController implements Initializable {
         if (bottomBorder || topBorder) {
             deltaY *= -1;
         }
+
     }
 
 
@@ -157,20 +166,20 @@ public class gameController implements Initializable {
     private void checkCollisionBottomZone(){
 
         if(ball.getBoundsInParent().intersects(bottom.getBoundsInParent())){
-            timeline.stop();
-            bricks.forEach(brick -> scene.getChildren().remove(brick));
-            bricks.clear();
+            timeline.pause();
 
             deltaX = -1;
             deltaY = -3;
 
             ball.setLayoutX(300);
             ball.setLayoutY(386);
+            paddle.setLayoutX(225);
+            paddle.setLayoutY(403);
             gameStrike +=1;
         }
-         if(gameStrike ==3){
+        if(gameStrike ==3){
              gameOver();  ;
-         }
+        }
     }
 
     public void gameOver() {

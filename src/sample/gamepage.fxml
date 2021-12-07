@@ -6,7 +6,7 @@
 
 <AnchorPane fx:id="scene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.gameController">
    <children>
-      <Rectangle fx:id="paddle" arcHeight="5.0" arcWidth="5.0" fill="RED" focusTraversable="true" height="10.0" layoutX="225.0" layoutY="403.0" onKeyPressed="#paddleMovement" onKeyReleased="#startKey" stroke="BLACK" strokeType="INSIDE" width="150.0" />
+      <Rectangle fx:id="paddle" arcHeight="5.0" arcWidth="5.0" fill="RED" focusTraversable="true" height="10.0" layoutX="225.0" layoutY="403.0" onKeyPressed="#paddleMovement" onKeyReleased="#playPauseKey" stroke="BLACK" strokeType="INSIDE" width="150.0" />
       <Circle fx:id="ball" fill="YELLOW" layoutX="300.0" layoutY="386.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
       <Rectangle fx:id="bottom" arcHeight="5.0" arcWidth="5.0" fill="WHITE" layoutY="450.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
    </children>
