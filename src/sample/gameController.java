@@ -6,21 +6,19 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
-
-
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -44,6 +42,7 @@ public class gameController implements Initializable {
 
     private static final int DEF_MOVE_AMOUNT = 5;
 
+    public int gameStrike =0;
 
     private ArrayList<Rectangle> bricks = new ArrayList<>();
 
@@ -77,6 +76,7 @@ public class gameController implements Initializable {
         if (event.getCode() == KeyCode.SPACE){
             startGame();
         }
+
     }
 
     private void startGame(){
@@ -154,7 +154,8 @@ public class gameController implements Initializable {
         }
     }
 
-    public void checkCollisionBottomZone(){
+    private void checkCollisionBottomZone(){
+
         if(ball.getBoundsInParent().intersects(bottom.getBoundsInParent())){
             timeline.stop();
             bricks.forEach(brick -> scene.getChildren().remove(brick));
@@ -164,15 +165,31 @@ public class gameController implements Initializable {
             deltaY = -3;
 
             ball.setLayoutX(300);
-            ball.setLayoutY(300);
+            ball.setLayoutY(386);
+            gameStrike +=1;
+        }
+         if(gameStrike ==3){
+             gameOver();  ;
+         }
+    }
 
+    public void gameOver() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("gameEndPage.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = (Stage) this.scene.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
     public void createBricks() {
 
         int k = 0;
             for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 10; j++) {
+                for (int j = 0; j < 9.3; j++) {
                     Rectangle brickModel = new Rectangle((j * 64), k, 63, 29);
                     brickModel.setFill(Color.FIREBRICK);
                     scene.getChildren().add(brickModel);
