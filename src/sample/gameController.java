@@ -43,7 +43,7 @@ public class gameController implements Initializable {
     private static final int DEF_MOVE_AMOUNT = 5;
 
     public int gameStrike = 0;
-    public int gameLevel = 0;
+    public int gameLevel = 1;
 
     private ArrayList<Rectangle> bricks = new ArrayList<>();
 
@@ -59,7 +59,9 @@ public class gameController implements Initializable {
             if(!bricks.isEmpty()){
                 bricks.removeIf(brick -> checkCollisionBrick(brick));
             } else {
+                gameLevel++;
                 timeline.stop();
+                nextLevel();
             }
 
             checkCollisionScene(scene);
@@ -92,6 +94,150 @@ public class gameController implements Initializable {
         createBricks();}
     }
 
+    private void nextLevel(){
+        createBricks();
+        timeline.play();
+    }
+
+    public void createBricks() {
+        if(gameLevel==1) {
+            makeSingleTypeLevel();
+        }
+        else{
+            makeChessboardLevel();
+        }
+    }
+
+    private void makeSingleTypeLevel() {
+        int k = 0;
+        int i,j;
+        for ( i = 0; i < 3; i++) {
+            for (j = 0; j < 10; j++) {
+                if (i % 2 != 0) {
+                    Rectangle rectangle = new Rectangle((j * 60), k, 59, 30);
+                    clayBrick(rectangle);
+                    rectangle.setStroke(Color.GRAY);
+                    scene.getChildren().add(rectangle);
+                    bricks.add(rectangle);
+                    for (j = 0; j < 10; j++) {
+                        Rectangle rectangle1 = new Rectangle((32+(j * 60)), k, 59, 30);
+                        clayBrick1(rectangle1);
+                        rectangle1.setStroke(Color.GRAY);
+                        scene.getChildren().add(rectangle1);
+                        bricks.add(rectangle1);
+                    }
+                }
+                else{
+                    for (j = 0; j < 10; j++) {
+                        Rectangle rectangle = new Rectangle((j * 60), k, 59, 30);
+                        clayBrick(rectangle);
+                        rectangle.setStroke(Color.GRAY);
+                        scene.getChildren().add(rectangle);
+                        bricks.add(rectangle);
+                    }
+                }
+            }
+            k += 30;
+        }
+    }
+
+    private void makeChessboardLevel(){
+        int i, j;
+        int k = 0;
+        int size = 3;
+
+        for (i = 0; i < size; i++) {
+            for (j = 0; j < 10; j++) {
+                if (i % 2 != 0) {
+                    Rectangle rectangle = new Rectangle((j * 60),  k, 59, 30);
+                    if ((i + j) % 2 == 0){
+                        checkGameLevelOdd(rectangle);
+                    }
+                    else {
+                        checkGameLevelEven(rectangle);
+                    }
+                    rectangle.setStroke(Color.GRAY);
+                    scene.getChildren().add(rectangle);
+                    bricks.add(rectangle);
+
+                    for (j = 0; j < 10; j++) {
+                        Rectangle rectangle1 = new Rectangle((32 + (j * 60)), k, 59, 30);
+                        if ((i + j) % 5 == 0) {
+                            checkGameLevelOdd1(rectangle1);
+                        } else {
+                            checkGameLevelEven1(rectangle1);
+                        }
+                        rectangle1.setStroke(Color.GRAY);
+                        scene.getChildren().add(rectangle1);
+                        bricks.add(rectangle1);
+                    }
+                } else {
+                    for (j = 0; j < 10; j++) {
+                        Rectangle rectangle = new Rectangle((j * 60), k, 59, 30);
+                        if ((i + j) % 2 == 0){
+                            checkGameLevelOdd(rectangle);
+                        }
+                        else {
+                            checkGameLevelEven(rectangle);
+                        }
+                        rectangle.setStroke(Color.GRAY);
+                        scene.getChildren().add(rectangle);
+                        bricks.add(rectangle);
+                    }
+                }
+                k += 30;
+            }
+        }
+    }
+
+    private void checkGameLevelOdd(Rectangle rectangle) {
+        if(gameLevel==2){clayBrick(rectangle);}
+        else if(gameLevel==3){clayBrick(rectangle);}
+        else if(gameLevel==4){steelBrick(rectangle);}
+    }
+
+    private void checkGameLevelOdd1(Rectangle rectangle1) {
+        if(gameLevel==2){clayBrick1(rectangle1);}
+        else if(gameLevel==3){clayBrick1(rectangle1);}
+        else if(gameLevel==4){steelBrick1(rectangle1);}
+    }
+
+    private void checkGameLevelEven(Rectangle rectangle) {
+        if(gameLevel==2){cementBrick(rectangle);}
+        else if(gameLevel==3){steelBrick(rectangle);}
+        else if(gameLevel==4){cementBrick(rectangle);}
+    }
+
+    private void checkGameLevelEven1(Rectangle rectangle1) {
+        if(gameLevel==2){cementBrick1(rectangle1);}
+        else if(gameLevel==3){steelBrick1(rectangle1);}
+        else if(gameLevel==4){cementBrick1(rectangle1);}
+    }
+
+    private void clayBrick(Rectangle rectangle) {
+        rectangle.setFill(Color.rgb(178, 34, 34));
+    }
+
+    private void clayBrick1(Rectangle rectangle1) {
+        rectangle1.setFill(Color.rgb(178, 34, 34));
+    }
+
+    private void cementBrick(Rectangle rectangle) {
+        rectangle.setFill(Color.rgb(147,147, 147));
+    }
+
+    private void cementBrick1(Rectangle rectangle1) {
+        rectangle1.setFill(Color.rgb(147,147, 147));
+    }
+
+    private void steelBrick(Rectangle rectangle) {
+        rectangle.setFill(Color.rgb(203,203, 201));
+    }
+
+    private void steelBrick1(Rectangle rectangle1) {
+        rectangle1.setFill(Color.rgb(203,203, 201));
+    }
+
     @FXML
     public void paddleMovement(KeyEvent event) {
 //      paddle move left
@@ -110,8 +256,8 @@ public class gameController implements Initializable {
 
     private void checkCollisionScene(Node node) {
         Bounds bounds = node.getBoundsInLocal();
-        boolean rightBorder = ball.getLayoutX() >= (bounds.getMaxX() - ball.getRadius());
-        boolean leftBorder = ball.getLayoutX() <= (bounds.getMinX() + ball.getRadius());
+        boolean rightBorder = ball.getLayoutX() >= (600 - ball.getRadius());
+        boolean leftBorder = ball.getLayoutX() <= (0 + ball.getRadius());
         boolean bottomBorder = ball.getLayoutY() >= (bounds.getMaxY() - ball.getRadius());
         boolean topBorder = ball.getLayoutY() <= (bounds.getMinY() + ball.getRadius());
 
@@ -194,18 +340,6 @@ public class gameController implements Initializable {
         }
     }
 
-    public void createBricks() {
 
-        int k = 0;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 9.3; j++) {
-                    Rectangle brickModel = new Rectangle((j * 64), k, 63, 29);
-                    brickModel.setFill(Color.FIREBRICK);
-                    scene.getChildren().add(brickModel);
-                    bricks.add(brickModel);
-                }
-                k += 30;
-            }
-        }
     }
 
