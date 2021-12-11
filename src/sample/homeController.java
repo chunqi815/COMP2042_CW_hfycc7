@@ -20,9 +20,14 @@ public class homeController {
 
     @FXML
     private void onStartButtonClick() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("gamepage.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("gamepage.fxml"));
+        Parent root = fxmlLoader.load();
+
         Scene scene = new Scene(root,600,450);
         Stage stage = (Stage)startButton.getScene().getWindow();
+
+        gameController gameController = fxmlLoader.getController();
+        gameController.setStage(stage);
         stage.setScene(scene);
         stage.show();
     }

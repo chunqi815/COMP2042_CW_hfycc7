@@ -15,7 +15,6 @@ public class SteelBrick extends brick {
         super.brick = rectangle;
         super.brick.setFill(Color.rgb(203,203, 201));
         super.brick.setStroke(Color.GRAY);
-        System.out.format("%d",brickStrength);
     }
 
 }

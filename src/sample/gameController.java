@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -17,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.paint.Color;
@@ -40,13 +42,14 @@ public class gameController implements Initializable {
     @FXML
     private Label scoreLabel;
 
+    private Stage stage;
+
     private player player;
     private ball ball;
     private brick brick;
 
-    public int gameStrike = 0;
     public int gameLevel = 1;
-    public int gameBall = 3;
+    public int ballCnt = 3;
     public int score = 0;
     public int FPS = 10;
     protected final int brickCnt = 10;
@@ -55,7 +58,9 @@ public class gameController implements Initializable {
     private static final int CEMENT = 2;
     private static final int STEEL = 3;
 
-
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     private ArrayList<brick> bricks = new ArrayList<>();
 
@@ -111,7 +116,6 @@ public class gameController implements Initializable {
     private void startGame(){
         timeline.play();
         makeLevels(gameLevel=1);
-        gameStrike = 0;
         FPS=10;
     }
 
@@ -136,7 +140,7 @@ public class gameController implements Initializable {
     }
 
     @FXML
-    public void keyPressed(KeyEvent event) {
+    public void keyPressed(KeyEvent event) throws IOException {
 //        play/pause button
         if(event.getCode() == KeyCode.SPACE) {
             if (timeline != null && timeline.getStatus() == Animation.Status.RUNNING) {
@@ -157,6 +161,13 @@ public class gameController implements Initializable {
             player.setMoveRight(true);
             player.setMoveLeft(false);
         }
+
+        if (event.isAltDown() && event.isShiftDown() && event.getCode() == KeyCode.F1){
+            if (timeline != null && timeline.getStatus() == Animation.Status.RUNNING){
+                timeline.pause();
+            }
+            openConsole();
+        }
         setScoreLabel();
     }
 
@@ -172,7 +183,7 @@ public class gameController implements Initializable {
     @FXML
     private void setScoreLabel(){
         if(timeline.getStatus() == Animation.Status.RUNNING){
-            scoreLabel.setText(String.format("Current Score: %d || Balls: %d",getScore(),(gameBall-gameStrike)));
+            scoreLabel.setText(String.format("Current Score: %d || Balls: %d",getScore(),(ballCnt)));
         }
         else if (timeline.getStatus() == Animation.Status.PAUSED){
             scoreLabel.setText("Press Spacebar to Play/Pause");
@@ -188,9 +199,9 @@ public class gameController implements Initializable {
             circle.setLayoutY(386);
             paddle.setLayoutX(225);
             paddle.setLayoutY(403);
-            gameStrike +=1;
+            ballCnt -=1;
         }
-        if(gameStrike ==3){
+        if(ballCnt==0){
             gameOver();
         }
     }
@@ -213,7 +224,7 @@ public class gameController implements Initializable {
 
 
 
-        public void gameOver() {
+    public void gameOver() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("gameEndPage.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
@@ -226,6 +237,30 @@ public class gameController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void openConsole() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource( "consoleView.fxml"));
+        Parent pane = fxmlLoader.load();
+        Scene consoleScene = new Scene(pane, 350, 80);
+
+        consoleController consoleController = fxmlLoader.getController();
+        consoleController.setLevel(gameLevel);
+        consoleController.setBallCount(ballCnt);
+        Stage console = new Stage();
+
+        console.initModality(Modality.APPLICATION_MODAL);
+        console.initOwner(stage);
+        console.setScene(consoleScene);
+        console.centerOnScreen();
+        console.show();
+        console.setOnCloseRequest(event -> {
+            ballCnt = consoleController.ballCnt;
+            if (gameLevel != consoleController.gameLevel) {
+                gameLevel = consoleController.gameLevel - 1;
+                nextLevel();
+            }
+        });
     }
     }
 
