@@ -46,9 +46,11 @@ public class gameController implements Initializable {
 
     public int gameStrike = 0;
     public int gameLevel = 1;
+    public int gameBall = 3;
     public int score = 0;
-    protected final int brickCnt = 3;
-    protected final int lineCnt = 1;
+    public int FPS = 10;
+    protected final int brickCnt = 10;
+    protected final int lineCnt = 3;
     private static final int CLAY = 1;
     private static final int CEMENT = 2;
     private static final int STEEL = 3;
@@ -58,7 +60,7 @@ public class gameController implements Initializable {
     private ArrayList<brick> bricks = new ArrayList<>();
 
     //1 Frame every 10 millis, which means 100 FPS
-    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<>() {
+    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(FPS), new EventHandler<>() {
 
         @Override
         public void handle(ActionEvent actionEvent) {
@@ -85,7 +87,13 @@ public class gameController implements Initializable {
                 });
             }
             else{
-                nextLevel();
+                if (gameLevel==6){
+                    makeLevels(6);
+                    FPS+=10;
+                }
+                else {
+                    nextLevel();
+                }
             }
 
             ball.checkCollisionScene(scene);
@@ -104,7 +112,7 @@ public class gameController implements Initializable {
         timeline.play();
         makeLevels(gameLevel=1);
         gameStrike = 0;
-
+        FPS=10;
     }
 
     private void nextLevel(){
@@ -162,9 +170,9 @@ public class gameController implements Initializable {
     }
 
     @FXML
-    public void setScoreLabel(){
+    private void setScoreLabel(){
         if(timeline.getStatus() == Animation.Status.RUNNING){
-            scoreLabel.setText(String.format("Current Score: %d",getScore()));
+            scoreLabel.setText(String.format("Current Score: %d || Balls: %d",getScore(),(gameBall-gameStrike)));
         }
         else if (timeline.getStatus() == Animation.Status.PAUSED){
             scoreLabel.setText("Press Spacebar to Play/Pause");
@@ -199,9 +207,10 @@ public class gameController implements Initializable {
         }
     }
 
-    private int getScore(){
+    public int getScore(){
         return score;
     }
+
 
 
         public void gameOver() {
@@ -209,6 +218,9 @@ public class gameController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("gameEndPage.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = (Stage) this.scene.getScene().getWindow();
+            gameEndController gameEndController = fxmlLoader.getController();
+            gameEndController.setCurrentScoreLabel(score);
+            gameEndController.setHighScore(score);
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {

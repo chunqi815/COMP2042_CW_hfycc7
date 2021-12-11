@@ -28,12 +28,12 @@ public class brick {
         for ( i = 0; i < lineCnt; i++) {
             for (j = 0; j < brickCnt; j++) {
                 if (i % 2 != 0) {
-                    Rectangle rectangle = new Rectangle((j * 60), k, 59, 30);
+                    Rectangle rectangle = new Rectangle((j * 60), k, 60, 20);
                     brick temp = makeBrick(type, rectangle);
                     scene.getChildren().add(rectangle);
                     bricks.add(temp);
                     for (j = 0; j < brickCnt; j++) {
-                        Rectangle rectangle1 = new Rectangle((32+(j * 60)), k, 59, 30);
+                        Rectangle rectangle1 = new Rectangle((32+(j * 60)), k, 60, 20);
                         temp = makeBrick(type, rectangle1);
                         scene.getChildren().add(rectangle1);
                         bricks.add(temp);
@@ -41,14 +41,14 @@ public class brick {
                 }
                 else{
                     for (j = 0; j < brickCnt; j++) {
-                        Rectangle rectangle = new Rectangle((j * 60), k, 59, 30);
+                        Rectangle rectangle = new Rectangle((j * 60), k, 60, 20);
                         brick temp = makeBrick(type,rectangle);
                         scene.getChildren().add(rectangle);
                         bricks.add(temp);
                     }
                 }
             }
-            k += 30;
+            k += 20;
         }
         return bricks;
     }
@@ -62,7 +62,7 @@ public class brick {
         for (i = 0; i < lineCnt; i++) {
             for (j = 0; j < brickCnt; j++) {
                 if (i % 2 != 0) {
-                    Rectangle rectangle = new Rectangle((j * 60),  k, 59, 30);
+                    Rectangle rectangle = new Rectangle((j * 60),  k, 60, 20);
                     sample.brick temp;
                     if ((i + j) % 2 == 0){
                         temp = makeBrick(typeA, rectangle);
@@ -74,7 +74,7 @@ public class brick {
                     bricks.add(temp);
 
                     for (j = 0; j < brickCnt; j++) {
-                        Rectangle rectangle1 = new Rectangle((32 + (j * 60)), k, 59, 30);
+                        Rectangle rectangle1 = new Rectangle((32 + (j * 60)), k, 60, 20);
                         if ((i + j) % 5 == 0) {
                             temp = makeBrick(typeA,rectangle1);
                         } else {
@@ -85,7 +85,7 @@ public class brick {
                     }
                 } else {
                     for (j = 0; j < brickCnt; j++) {
-                        Rectangle rectangle = new Rectangle((j * 60), k, 59, 30);
+                        Rectangle rectangle = new Rectangle((j * 60), k, 60, 20);
                         sample.brick temp;
                         if ((i + j) % 2 == 0){
                             temp = makeBrick(typeA, rectangle);
@@ -97,7 +97,7 @@ public class brick {
                         bricks.add(temp);
                     }
                 }
-                k += 30;
+                k += 20;
             }
         }
         return bricks;
