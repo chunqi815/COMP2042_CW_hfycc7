@@ -1,7 +1,6 @@
 package sample;
 
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -10,8 +9,8 @@ import java.util.Random;
 public class brick {
 
     private static final int CLAY = 1;
-    private static final int STEEL = 2;
-    private static final int CEMENT = 3;
+    private static final int CEMENT = 2;
+    private static final int STEEL = 3;
     public double probability;
     public int brickStrength;
 
@@ -110,10 +109,10 @@ public class brick {
             case CLAY->{
                 newBrick = new ClayBrick(scene, rectangle);
             }
-            case STEEL-> {
+            case STEEL -> {
                 newBrick = new SteelBrick(scene,rectangle);
             }
-            case CEMENT->{
+            case CEMENT ->{
                 newBrick = new CementBrick(scene,rectangle);
             }
             default->throw  new IllegalArgumentException(String.format("Unknown Type:%d\n",type));
@@ -129,8 +128,8 @@ public class brick {
         if (rnd.nextDouble() <= probability) {
             brickStrength--;
         }
-        System.out.println("setStrength true");
     }
+
 
 
 }

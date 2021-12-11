@@ -8,15 +8,20 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.paint.Color;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,25 +37,28 @@ public class gameController implements Initializable {
     private AnchorPane scene;
     @FXML
     private Rectangle paddle;
+    @FXML
+    private Label scoreLabel;
 
     private player player;
     private ball ball;
     private brick brick;
 
     public int gameStrike = 0;
-    public int gameLevel = 2;
-    protected final int brickCnt = 10;
-    protected final int lineCnt = 3;
+    public int gameLevel = 1;
+    public int score = 0;
+    protected final int brickCnt = 3;
+    protected final int lineCnt = 1;
     private static final int CLAY = 1;
-    private static final int STEEL = 2;
-    private static final int CEMENT = 3;
+    private static final int CEMENT = 2;
+    private static final int STEEL = 3;
 
 
 
     private ArrayList<brick> bricks = new ArrayList<>();
 
     //1 Frame every 10 millis, which means 100 FPS
-    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30), new EventHandler<>() {
+    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10), new EventHandler<>() {
 
         @Override
         public void handle(ActionEvent actionEvent) {
@@ -65,10 +73,10 @@ public class gameController implements Initializable {
 
                     if (collided) {
                         brick.setStrength();
+                        setScore(brick);
 
                         if(brick.getStrength()==0) {
                             scene.getChildren().remove(brick.brick);
-                            System.out.println("test");
                             return true;
                         }
 
@@ -76,7 +84,7 @@ public class gameController implements Initializable {
                     return false;
                 });
             }
-            else {
+            else{
                 nextLevel();
             }
 
@@ -94,13 +102,15 @@ public class gameController implements Initializable {
 
     private void startGame(){
         timeline.play();
-        makeLevels(gameLevel);
+        makeLevels(gameLevel=1);
+        gameStrike = 0;
+
     }
 
     private void nextLevel(){
         timeline.pause();
         bricks.clear();
-        makeLevels(gameLevel++);
+        makeLevels(gameLevel+=1);
     }
 
 
@@ -110,8 +120,11 @@ public class gameController implements Initializable {
             case 2 -> bricks = new brick(scene).makeChessboardLevel(CLAY, CEMENT,lineCnt,brickCnt);
             case 3-> bricks = new brick(scene).makeChessboardLevel(CLAY, STEEL,lineCnt,brickCnt);
             case 4-> bricks = new brick(scene).makeChessboardLevel(STEEL, CEMENT,lineCnt,brickCnt);
+            case 5-> bricks = new brick(scene).makeChessboardLevel(CEMENT, CEMENT,lineCnt,brickCnt);
+            case 6-> bricks = new brick(scene).makeChessboardLevel(STEEL, STEEL,lineCnt,brickCnt);
+            case 7-> gameOver();
         }
-
+        timeline.play();
     }
 
     @FXML
@@ -136,6 +149,7 @@ public class gameController implements Initializable {
             player.setMoveRight(true);
             player.setMoveLeft(false);
         }
+        setScoreLabel();
     }
 
     public void paddleKeyReleased(KeyEvent e) {
@@ -144,6 +158,16 @@ public class gameController implements Initializable {
         }
         if (e.getCode() == KeyCode.D) {
             player.setMoveRight(false);
+        }
+    }
+
+    @FXML
+    public void setScoreLabel(){
+        if(timeline.getStatus() == Animation.Status.RUNNING){
+            scoreLabel.setText(String.format("Current Score: %d",getScore()));
+        }
+        else if (timeline.getStatus() == Animation.Status.PAUSED){
+            scoreLabel.setText("Press Spacebar to Play/Pause");
         }
     }
 
@@ -163,7 +187,24 @@ public class gameController implements Initializable {
         }
     }
 
-    public void gameOver() {
+    private void setScore(brick brick){
+        if (brick instanceof ClayBrick){
+            score+= 1;
+        }
+        else if (brick instanceof CementBrick){
+            score+= 2;
+        }
+        else if (brick instanceof SteelBrick){
+            score+= 3;
+        }
+    }
+
+    private int getScore(){
+        return score;
+    }
+
+
+        public void gameOver() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("gameEndPage.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
