@@ -6,10 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("homepage.fxml"));
         Parent pane = fxmlLoader.load();
         Scene root = new Scene(pane, 450, 300);
@@ -23,4 +25,3 @@ public class Main extends Application {
         launch(args);
     }
 }
-
