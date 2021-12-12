@@ -29,24 +29,46 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ * This controller controls gamepage.fxml view
+ */
 public class gameController implements Initializable {
-
+    /**
+     * Ball Object
+     */
     @FXML
     private Circle circle;
+    /**
+     * Reference to Rectangle representing the bottom zone that detects when ball loses
+     */
     @FXML
     private Rectangle bottom;
+    /**
+     * Referencing anchorpane representing gamepage scene/window of game.
+     */
     @FXML
     private AnchorPane scene;
+    /**
+     * Referencing Rectangle that controls the paddle
+     */
     @FXML
     private Rectangle paddle;
+    /**
+     * Referencing Label that displays the current score
+     */
     @FXML
     private Label scoreLabel;
 
+    /**
+     * Referencing the window of game.
+     */
     private Stage stage;
-
+    /**
+     *
+     */
     private player player;
     private ball ball;
-    private brick brick;
+
 
     public int gameLevel = 1;
     public int ballCnt = 3;
@@ -94,7 +116,7 @@ public class gameController implements Initializable {
             else{
                 if (gameLevel==6){
                     makeLevels(6);
-                    FPS+=10;
+                    FPS-=10;
                 }
                 else {
                     setReward();
