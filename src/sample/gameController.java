@@ -97,6 +97,7 @@ public class gameController implements Initializable {
                     FPS+=10;
                 }
                 else {
+                    setReward();
                     nextLevel();
                 }
             }
@@ -194,7 +195,7 @@ public class gameController implements Initializable {
 
         if(circle.getBoundsInParent().intersects(bottom.getBoundsInParent())){
             timeline.pause();
-
+            setPenalty();
             circle.setLayoutX(300);
             circle.setLayoutY(386);
             paddle.setLayoutX(225);
@@ -222,6 +223,13 @@ public class gameController implements Initializable {
         return score;
     }
 
+    public void setPenalty(){
+        score-=10;
+    }
+
+    public void setReward(){
+        score+=10;
+    }
 
 
     public void gameOver() {

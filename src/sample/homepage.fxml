@@ -24,6 +24,5 @@
          </cursor>
       </Button>
       <Button fx:id="exitButton" mnemonicParsing="false" onAction="#onExitButtonClick" prefHeight="20.0" prefWidth="168.0" text="Exit" />
-      <Button mnemonicParsing="false" prefHeight="20.0" prefWidth="168.0" text="High Score" />
    </children>
 </VBox>
