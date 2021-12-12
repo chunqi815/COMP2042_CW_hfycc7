@@ -60,26 +60,59 @@ public class gameController implements Initializable {
     private Label scoreLabel;
 
     /**
-     * Referencing the window of game.
+     * Stage Object
      */
     private Stage stage;
     /**
-     *
+     *Player Object
      */
     private player player;
+    /**
+     * Ball Object
+     */
     private ball ball;
 
-
+    /**
+     * Game Level
+     */
     public int gameLevel = 1;
+    /**
+     * Balls Left
+     */
     public int ballCnt = 3;
+    /**
+     * Current Score
+     */
     public int score = 0;
+    /**
+     * How many milliseconds per frame
+     */
     public int FPS = 10;
+    /**
+     * Bricks per lineCount
+     */
     protected final int brickCnt = 10;
+    /**
+     * How many lines of bricks in game
+     */
     protected final int lineCnt = 3;
+    /**
+     * Clay Brick Type
+     */
     private static final int CLAY = 1;
+    /**
+     * Cement Brick Type
+     */
     private static final int CEMENT = 2;
+    /**
+     * Steel Brick Type
+     */
     private static final int STEEL = 3;
 
+    /**
+     * Setting Stage to this stage
+     * @param stage
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
