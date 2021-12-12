@@ -14,10 +14,16 @@ import java.io.IOException;
 
 public class homeController {
 
+    /**
+     * Referencing Button representing start button
+     */
     @FXML
     private Button startButton;
 
-
+    /**
+     * Setting start button to open gamepage.fxml (game window)
+     * @throws IOException Error on loading the .fxml file.
+     */
     @FXML
     private void onStartButtonClick() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("gamepage.fxml"));
@@ -32,6 +38,9 @@ public class homeController {
         stage.show();
     }
 
+    /**
+     * Setting exit button to exit if pressed
+     */
     @FXML
     private void onExitButtonClick(){
         Platform.exit();

@@ -72,6 +72,8 @@ public class gameController implements Initializable {
      */
     private ball ball;
 
+    private brick brick;
+
     /**
      * Game Level
      */
@@ -116,12 +118,19 @@ public class gameController implements Initializable {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
+/**
+ * Array of brick object
+ */
     private ArrayList<brick> bricks = new ArrayList<>();
 
-    //1 Frame every 10 millis, which means 100 FPS
+    /**
+     * Adds animation timer to the handle function
+     */
     Timeline timeline = new Timeline(new KeyFrame(Duration.millis(FPS), new EventHandler<>() {
-
+        /**
+         *Moves the ball and player, check for all collisions and sets the score for every frame.
+         * @param actionEvent
+         */
         @Override
         public void handle(ActionEvent actionEvent) {
             player.move();
@@ -162,6 +171,11 @@ public class gameController implements Initializable {
         }
     }));
 
+    /**
+     * Sets the timeline to set cycles to indefinite and create an instance of ball and paddle.
+     * @param url Location used to resolve relative paths for root objects
+     * @param resourceBundle resouces used to localise the root object
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -169,19 +183,28 @@ public class gameController implements Initializable {
         player = new player(paddle);
     }
 
+    /**
+     * Add bricks to the gameframe, sets the milisecond per frame and set the animation timeline to start.
+     */
     private void startGame(){
         timeline.play();
         makeLevels(gameLevel=1);
         FPS=10;
     }
 
+    /**
+     * Paused animation timeline, clear bricks then sets the next level bricks.
+     */
     private void nextLevel(){
         timeline.pause();
         bricks.clear();
         makeLevels(gameLevel+=1);
     }
 
-
+    /**
+     * Sets the bricks based on which level it is
+     * @param gameLevel game level
+     */
     public void makeLevels(int gameLevel){
         switch(gameLevel){
             case 1 -> bricks = new brick(scene).makeSingleTypeLevel(CLAY,lineCnt,brickCnt);
@@ -195,6 +218,11 @@ public class gameController implements Initializable {
         timeline.play();
     }
 
+    /**
+     * Pauses,plays and starts game when space bar pressed. Moves Left when A is pressed. Moves Right when D is pressed. Opens console when SHIFT+ALT+F1 is pressed.
+     * @param event receives the keyCode
+     * @throws IOException Error on loading the .fxml file.
+     */
     @FXML
     public void keyPressed(KeyEvent event) throws IOException {
 //        play/pause button
@@ -227,6 +255,10 @@ public class gameController implements Initializable {
         setScoreLabel();
     }
 
+    /**
+     * Stops paddle from continuing moving left or right after key is released.
+     * @param e receives keyReleased.
+     */
     public void paddleKeyReleased(KeyEvent e) {
         if (e.getCode() == KeyCode.A) {
             player.setMoveLeft(false);
@@ -236,6 +268,9 @@ public class gameController implements Initializable {
         }
     }
 
+    /**
+     * Sets the score label to display the current score
+     */
     @FXML
     private void setScoreLabel(){
         if(timeline.getStatus() == Animation.Status.RUNNING){
@@ -246,6 +281,9 @@ public class gameController implements Initializable {
         }
     }
 
+    /**
+     * Checks if ball collides with the bottom of the game window.
+     */
     private void checkCollisionBottomZone(){
 
         if(circle.getBoundsInParent().intersects(bottom.getBoundsInParent())){
@@ -262,6 +300,10 @@ public class gameController implements Initializable {
         }
     }
 
+    /**
+     * Adds the score to total current score if brick breaks.
+     * @param brick brick object
+     */
     private void setScore(brick brick){
         if (brick instanceof ClayBrick){
             score+= 1;
@@ -274,19 +316,31 @@ public class gameController implements Initializable {
         }
     }
 
+    /**
+     * Getter to return score
+     * @return
+     */
     public int getScore(){
         return score;
     }
 
+    /**
+     * Minus the current score as a penalty
+     */
     public void setPenalty(){
         score-=10;
     }
 
+    /**
+     * Adds to the current score as a reward.
+     */
     public void setReward(){
         score+=10;
     }
 
-
+    /**
+     * Opens up game over page once player loses
+     */
     public void gameOver() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("gameEndPage.fxml"));
@@ -302,6 +356,10 @@ public class gameController implements Initializable {
         }
     }
 
+    /**
+     * Opens up console once player keys SHIFT+ALT+F1
+     * @throws IOException Error on loading the .fxml file.
+     */
     private void openConsole() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource( "consoleView.fxml"));
         Parent pane = fxmlLoader.load();

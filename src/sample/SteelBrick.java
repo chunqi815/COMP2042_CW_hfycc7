@@ -5,9 +5,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.util.Random;
-
+/**
+ * Steel Brick child class of brick
+ */
 public class SteelBrick extends brick {
-
+    /**
+     * Sets brick strength, probability of breaking, brick color and brick border color
+     * @param scene
+     * @param rectangle brick object
+     */
     public SteelBrick(AnchorPane scene,Rectangle rectangle) {
         super(scene);
         super.brickStrength=2;

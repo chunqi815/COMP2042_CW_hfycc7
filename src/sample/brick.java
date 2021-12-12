@@ -6,21 +6,48 @@ import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Brick Class
+ */
 public class brick {
-
+    /**
+     * Assign each brick type to a value
+     */
     private static final int CLAY = 1;
     private static final int CEMENT = 2;
     private static final int STEEL = 3;
+    /**
+     * Probability of bricks breaking
+     */
     public double probability;
+    /**
+     * Strength of bricks
+     */
     public int brickStrength;
-
+    /**
+     * Reference to AnchorPane represent game scene
+     */
     public AnchorPane scene ;
+    /**
+     * Reference to Rectangle representing brick
+     */
     public Rectangle brick;
 
+    /**
+     *
+     * @param scene The circle referring to ball
+     */
     public brick(AnchorPane scene){
         this.scene = scene;
     }
 
+    /**
+     * Creates an array of bricks and returns it
+     * @param type brick type
+     * @param lineCnt array line count
+     * @param brickCnt Number of bricks per line
+     * @return array
+     */
     public ArrayList<brick> makeSingleTypeLevel(int type, int lineCnt, int brickCnt) {
         ArrayList<brick> bricks = new ArrayList<>();
         int k = 0;
@@ -53,6 +80,14 @@ public class brick {
         return bricks;
     }
 
+    /**
+     * Creates an array of two types of bricks and returns it
+     * @param typeA first type of brick
+     * @param typeB second type of brick
+     * @param lineCnt array line count
+     * @param brickCnt Number of bricks per line
+     * @return array
+     */
     public ArrayList<brick> makeChessboardLevel(int typeA, int typeB, int lineCnt, int brickCnt){
         ArrayList<brick> bricks = new ArrayList<>();
         int i, j;
@@ -103,6 +138,12 @@ public class brick {
         return bricks;
     }
 
+    /**
+     * Sets the brick according to the brick style
+     * @param type brick type
+     * @param rectangle brick
+     * @return brick style
+     */
     public brick makeBrick(int type, Rectangle rectangle){
         brick newBrick;
         switch(type){
