@@ -11,7 +11,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-
+/**
+ * Controller manages homepage.fxml
+ */
 public class homeController {
 
     /**
